@@ -3,8 +3,8 @@
 use App\Modules\Project\Filament\Resources\ProjectResource;
 use App\Modules\Project\Models\Project;
 use App\Modules\User\Models\User;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
@@ -24,7 +24,7 @@ it('can list projects', function () {
 it('has a create button on the list page', function () {
     actingAs($this->user)
         ->get(ProjectResource::getUrl('index'))
-        ->assertSee('New Project') // Default label for CreateAction
+        ->assertSee('New project')
         ->assertSee('projects/create');
 });
 
