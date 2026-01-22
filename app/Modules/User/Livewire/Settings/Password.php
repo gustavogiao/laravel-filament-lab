@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Settings;
+namespace App\Modules\User\Livewire\Settings;
 
-use App\Concerns\PasswordValidationRules;
+use App\Modules\User\Concerns\PasswordValidationRules;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
@@ -16,6 +16,11 @@ class Password extends Component
     public string $password = '';
 
     public string $password_confirmation = '';
+
+    public function render()
+    {
+        return view('livewire.settings.password');
+    }
 
     /**
      * Update the password for the currently authenticated user.

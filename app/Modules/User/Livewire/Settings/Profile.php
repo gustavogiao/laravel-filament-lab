@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire\Settings;
+namespace App\Modules\User\Livewire\Settings;
 
-use App\Concerns\ProfileValidationRules;
+use App\Modules\User\Concerns\ProfileValidationRules;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -16,6 +16,11 @@ class Profile extends Component
     public string $name = '';
 
     public string $email = '';
+
+    public function render()
+    {
+        return view('livewire.settings.profile');
+    }
 
     /**
      * Mount the component.

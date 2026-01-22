@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Concerns;
+namespace App\Modules\User\Concerns;
 
-use App\Models\User;
+use App\Modules\User\Models\User;
 use Illuminate\Validation\Rule;
 
 trait ProfileValidationRules

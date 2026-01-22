@@ -1,9 +1,9 @@
 <?php
 
-use App\Livewire\Settings\Appearance;
-use App\Livewire\Settings\Password;
-use App\Livewire\Settings\Profile;
-use App\Livewire\Settings\TwoFactor;
+use App\Modules\User\Livewire\Settings\Appearance;
+use App\Modules\User\Livewire\Settings\Password;
+use App\Modules\User\Livewire\Settings\Profile;
+use App\Modules\User\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 

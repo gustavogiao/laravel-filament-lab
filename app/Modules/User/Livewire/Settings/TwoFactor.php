@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Settings;
+namespace App\Modules\User\Livewire\Settings;
 
 use Exception;
 use Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication;
@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TwoFactor extends Component
 {
+    public function render()
+    {
+        return view('livewire.settings.two-factor');
+    }
+
     #[Locked]
     public bool $twoFactorEnabled;
 

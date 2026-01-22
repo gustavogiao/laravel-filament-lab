@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Settings\TwoFactor;
+namespace App\Modules\User\Livewire\Settings\TwoFactor;
 
 use Exception;
 use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
@@ -9,6 +9,11 @@ use Livewire\Component;
 
 class RecoveryCodes extends Component
 {
+    public function render()
+    {
+        return view('livewire.settings.two-factor.recovery-codes');
+    }
+
     #[Locked]
     public array $recoveryCodes = [];
 

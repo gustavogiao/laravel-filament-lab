@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace App\Modules\Auth\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
+use App\Modules\Auth\Actions\CreateNewUser;
+use App\Modules\Auth\Actions\ResetUserPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
