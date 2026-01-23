@@ -28,6 +28,13 @@ final class ProjectResource extends Resource
 
     protected static ?string $slug = 'projects';
 
+    public static function getRelations(): array
+    {
+        return [
+            ProjectResource\RelationManagers\TasksRelationManager::class,
+        ];
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -69,6 +76,7 @@ final class ProjectResource extends Resource
                 TernaryFilter::make('is_active')
                     ->label('Active'),
             ])
+            ->recordUrl(fn ($record) => ProjectResource::getUrl('view', ['record' => $record]))
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
@@ -85,6 +93,7 @@ final class ProjectResource extends Resource
         return [
             'index' => ProjectResource\Pages\ListProjects::route('/'),
             'create' => ProjectResource\Pages\CreateProject::route('/create'),
+            'view' => ProjectResource\Pages\ViewProject::route('/{record}'),
             'edit' => ProjectResource\Pages\EditProject::route('/{record}/edit'),
         ];
     }
