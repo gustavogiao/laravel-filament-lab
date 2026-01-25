@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\Project\Models\Project;
 use App\Modules\Task\Models\Task;
+use App\Modules\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,6 +21,7 @@ final class TaskFactory extends Factory
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->optional()->paragraph(),
             'is_completed' => $this->faker->boolean(30),
+            'submitted_by_id' => User::inRandomOrder()->first()->id,
         ];
     }
 }
