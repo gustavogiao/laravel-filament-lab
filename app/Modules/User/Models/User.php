@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Models;
 
+use App\Modules\Permissions\Models\Permission;
+use App\Modules\Permissions\Models\Role;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property string $id
@@ -28,13 +35,16 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property CarbonInterface|null $two_factor_confirmed_at
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
+ * @property-read Collection|Role[] $roles
+ * @property-read Collection|Permission[] $permissions
  */
+#[UseFactory(UserFactory::class)]
 final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /**
      * @use HasFactory<UserFactory>
      */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasUuids;
+    use HasFactory, HasRoles, HasUuids, LogsActivity, Notifiable, TwoFactorAuthenticatable;
 
     public function canAccessPanel(Panel $panel): bool
     {
@@ -91,5 +101,10 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
             ->take(2)
             ->map(fn (string $word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 }

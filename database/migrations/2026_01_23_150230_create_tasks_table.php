@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->boolean('is_completed')->default(false);
+            $table->foreignUuid('submitted_by_id')->constrained('users')->cascadeOnDelete();
             $table->foreignUuid('project_id')->constrained()->cascadeOnDelete();
 
             $table->timestamps();
