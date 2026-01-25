@@ -23,3 +23,4 @@ yarn-error.log
 /.zed
 /.junie
 /_ide_helper.php
+package-lock.json

@@ -7,25 +7,22 @@ namespace App\Modules\Task\Models;
 use App\Modules\Project\Models\Project;
 use Carbon\CarbonInterface;
 use Database\Factories\TaskFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\BaseModel;
 
 /**
- * @property int $id
+ * @property string $id
  * @property string $title
  * @property string|null $description
  * @property bool $is_completed
- * @property int $project_id
+ * @property string $project_id
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  * @property-read CarbonInterface|null $deleted_at
  */
-final class Task extends Model
+final class Task extends BaseModel
 {
-    use HasFactory, SoftDeletes;
-
+    
     protected $table = 'tasks';
 
     protected static function newFactory(): TaskFactory
@@ -44,11 +41,9 @@ final class Task extends Model
     public function casts(): array
     {
         return [
-            'id' => 'integer',
             'title' => 'string',
             'description' => 'string',
             'is_completed' => 'boolean',
-            'project_id' => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'deleted_at' => 'datetime',

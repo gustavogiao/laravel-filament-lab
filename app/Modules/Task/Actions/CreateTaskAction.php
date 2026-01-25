@@ -12,6 +12,7 @@ final class CreateTaskAction
     {
         $task = new Task;
 
+        $task->project_id = $data->project_id;
         $task->title = $data->title;
         $task->description = $data->description;
         $task->is_completed = $data->is_completed;

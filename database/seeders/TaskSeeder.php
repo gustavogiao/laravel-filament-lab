@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Modules\Task\Models\Task;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Modules\Project\Models\Project;
 
 class TaskSeeder extends Seeder
 {
@@ -13,6 +14,13 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
-        Task::factory()->count(20)->create();
+        $projects = Project::all();
+
+        foreach ($projects as $project) {
+            Task::factory()
+                ->count(10)
+                ->for($project)
+                ->create();
+        }
     }
 }

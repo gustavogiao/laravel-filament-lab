@@ -7,13 +7,11 @@ namespace App\Modules\Project\Models;
 use App\Modules\Task\Models\Task;
 use Carbon\CarbonInterface;
 use Database\Factories\ProjectFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\BaseModel;
 
 /**
- * @property int $id
+ * @property string $id
  * @property string $name
  * @property string|null $description
  * @property bool $is_active
@@ -21,10 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read CarbonInterface $updated_at
  * @property-read CarbonInterface|null $deleted_at
  */
-final class Project extends Model
+final class Project extends BaseModel   
 {
-    /** @use HasFactory<ProjectFactory> */
-    use HasFactory, SoftDeletes;
 
     protected $table = 'projects';
 
@@ -44,7 +40,6 @@ final class Project extends Model
     public function casts(): array
     {
         return [
-            'id' => 'integer',
             'name' => 'string',
             'description' => 'string',
             'is_active' => 'boolean',

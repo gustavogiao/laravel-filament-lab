@@ -9,6 +9,7 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +17,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 /**
- * @property int $id
+ * @property string $id
  * @property string $name
  * @property string $email
  * @property CarbonInterface|null $email_verified_at
@@ -33,7 +34,7 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     /**
      * @use HasFactory<UserFactory>
      */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasUuids;
 
     public function canAccessPanel(Panel $panel): bool
     {
@@ -70,7 +71,6 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     public function casts(): array
     {
         return [
-            'id' => 'integer',
             'name' => 'string',
             'email' => 'string',
             'email_verified_at' => 'datetime',
