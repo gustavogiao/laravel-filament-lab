@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Modules\User\Filament\Resources\UserResource\Pages;
+
+use App\Modules\Shared\Filament\Concerns\RedirectsToIndex;
+use App\Modules\User\Filament\Resources\UserResource;
+use Filament\Resources\Pages\EditRecord;
+
+final class EditUser extends EditRecord
+{
+    use RedirectsToIndex;
+
+    protected static string $resource = UserResource::class;
+}

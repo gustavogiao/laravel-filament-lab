@@ -1,12 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Task\Filament\Resources;
 
+use App\Modules\Task\Filament\Resources\TaskResource\Pages\CreateTask;
+use App\Modules\Task\Filament\Resources\TaskResource\Pages\EditTask;
+use App\Modules\Task\Filament\Resources\TaskResource\Pages\ListTasks;
+use App\Modules\Task\Filament\Resources\TaskResource\Pages\ViewTask;
 use App\Modules\Task\Models\Task;
+use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -14,6 +22,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -24,6 +33,8 @@ final class TaskResource extends Resource
     protected static ?string $model = Task::class;
 
     protected static ?string $navigationLabel = 'Tasks';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CheckCircle;
 
     protected static ?string $slug = 'tasks';
 
@@ -80,8 +91,8 @@ final class TaskResource extends Resource
                 TernaryFilter::make('is_completed')
                     ->label('Completed'),
             ])
-            ->recordUrl(fn ($record) => TaskResource::getUrl('view', ['record' => $record]))
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
@@ -95,10 +106,10 @@ final class TaskResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => TaskResource\Pages\ListTasks::route('/'),
-            'create' => TaskResource\Pages\CreateTask::route('/create'),
-            'view' => TaskResource\Pages\ViewTask::route('/{record}'),
-            'edit' => TaskResource\Pages\EditTask::route('/{record}/edit'),
+            'index' => ListTasks::route('/'),
+            'create' => CreateTask::route('/create'),
+            'view' => ViewTask::route('/{record}'),
+            'edit' => EditTask::route('/{record}/edit'),
         ];
     }
 }
