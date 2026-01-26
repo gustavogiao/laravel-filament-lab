@@ -17,7 +17,9 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -27,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -56,6 +59,29 @@ class AdminPanelProvider extends PanelProvider
                 in: app_path('Modules'),
                 for: 'App\\Modules'
             )
+            ->discoverLivewireComponents(
+                in: app_path('Livewire'),
+                for: 'App\\Livewire'
+            )
+            ->sidebarFullyCollapsibleOnDesktop()
+            ->authGuard('web')
+            ->plugins([
+                BreezyCore::make()
+                    ->avatarUploadComponent(fn ($fileUpload) => $fileUpload->disableLabel())
+                    ->passwordUpdateRules(
+                        rules: [Password::default()->mixedCase()->uncompromised(3)],
+                    )
+                    ->enableTwoFactorAuthentication()
+                    ->enableSanctumTokens(
+                        permissions: ['viewAny', 'create', 'update', 'delete'],
+                    )
+                    ->enableBrowserSessions()
+                    ->myProfile(
+                        hasAvatars: true,
+                        navigationGroup: 'Settings',
+                        userMenuLabel: 'My Profile',
+                    ),
+            ])
 
             ->pages([
                 Dashboard::class,
