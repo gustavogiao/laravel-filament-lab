@@ -8,6 +8,7 @@ use App\Modules\Permissions\Models\Permission;
 use App\Modules\Permissions\Models\Role;
 use App\Modules\Project\Models\Project;
 use App\Modules\Task\Models\Task;
+use App\Modules\User\Models\User;
 
 return [
     'permissions' => [
@@ -24,6 +25,7 @@ return [
             ],
             Project::class => PermissionsEnum::cases(),
             Task::class => PermissionsEnum::cases(),
+            User::class => PermissionsEnum::cases(),
         ],
         Roles::User->value => [
             Project::class => [

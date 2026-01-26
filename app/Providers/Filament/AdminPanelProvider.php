@@ -40,6 +40,14 @@ class AdminPanelProvider extends PanelProvider
                 in: app_path('Modules/Task/Filament/Resources'),
                 for: 'App\\Modules\\Task\\Filament\\Resources'
             )
+            ->discoverResources(
+                in: app_path('Modules/User/Filament/Resources'),
+                for: 'App\\Modules\\User\\Filament\\Resources'
+            )
+            ->discoverResources(
+                in: app_path('Modules/Permissions/Filament/Resources'),
+                for: 'App\\Modules\\Permissions\\Filament\\Resources'
+            )
             ->discoverPages(
                 in: app_path('Modules'),
                 for: 'App\\Modules'

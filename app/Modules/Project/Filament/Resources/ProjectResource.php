@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace App\Modules\Project\Filament\Resources;
 
+use App\Modules\Project\Filament\Resources\ProjectResource\Pages\CreateProject;
+use App\Modules\Project\Filament\Resources\ProjectResource\Pages\EditProject;
+use App\Modules\Project\Filament\Resources\ProjectResource\Pages\ListProjects;
+use App\Modules\Project\Filament\Resources\ProjectResource\Pages\ViewProject;
 use App\Modules\Project\Models\Project;
+use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -25,6 +32,8 @@ final class ProjectResource extends Resource
     protected static ?string $model = Project::class;
 
     protected static ?string $navigationLabel = 'Projects';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Briefcase;
 
     protected static ?string $slug = 'projects';
 
@@ -76,8 +85,8 @@ final class ProjectResource extends Resource
                 TernaryFilter::make('is_active')
                     ->label('Active'),
             ])
-            ->recordUrl(fn ($record) => ProjectResource::getUrl('view', ['record' => $record]))
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])
@@ -91,10 +100,10 @@ final class ProjectResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ProjectResource\Pages\ListProjects::route('/'),
-            'create' => ProjectResource\Pages\CreateProject::route('/create'),
-            'view' => ProjectResource\Pages\ViewProject::route('/{record}'),
-            'edit' => ProjectResource\Pages\EditProject::route('/{record}/edit'),
+            'index' => ListProjects::route('/'),
+            'create' => CreateProject::route('/create'),
+            'view' => ViewProject::route('/{record}'),
+            'edit' => EditProject::route('/{record}/edit'),
         ];
     }
 }

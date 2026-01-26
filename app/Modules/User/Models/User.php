@@ -6,12 +6,14 @@ namespace App\Modules\User\Models;
 
 use App\Modules\Permissions\Models\Permission;
 use App\Modules\Permissions\Models\Role;
+use App\Modules\User\Policies\UserPolicy;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -39,6 +41,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Collection|Permission[] $permissions
  */
 #[UseFactory(UserFactory::class)]
+#[UsePolicy(UserPolicy::class)]
 final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /**
