@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         if (DB::getDriverName() === 'pgsql') {
-            DB::statement('ALTER TABLE filament_lab.public.breezy_sessions ALTER COLUMN authenticatable_id TYPE UUID USING authenticatable_id::text::uuid');
+            DB::statement('ALTER TABLE breezy_sessions ALTER COLUMN authenticatable_id TYPE UUID USING authenticatable_id::text::uuid');
         } else {
             Schema::table('breezy_sessions', function (Blueprint $table) {
                 $table->uuid('authenticatable_id')->change();

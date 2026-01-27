@@ -80,6 +80,11 @@ final class ProjectResource extends Resource
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
+
+                TextColumn::make('owner.name')
+                    ->label('Owner')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 TernaryFilter::make('is_active')

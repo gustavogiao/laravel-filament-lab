@@ -7,7 +7,6 @@ use App\Modules\Task\Models\Task;
 
 final class CreateTaskAction
 {
-
     public function execute(TaskData $data): Task
     {
         $task = new Task;

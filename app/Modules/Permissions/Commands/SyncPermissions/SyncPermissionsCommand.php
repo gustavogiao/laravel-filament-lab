@@ -43,6 +43,7 @@ class SyncPermissionsCommand extends Command
         $this->syncRoles();
         $this->syncRolesPermissions($rbacConfigs);
         $this->syncSuperAdminPermissions($permissions);
+        $this->syncUserRoles();
 
         outro('Roles and permissions synchronized successfully!');
 
@@ -184,6 +185,19 @@ class SyncPermissionsCommand extends Command
         if (! $assigned) {
             warning('Default Super Admin user (admin@admin.com) not found.');
         }
+    }
+
+    public function syncUserRoles(): void
+    {
+        spin(
+            callback: function (): void {
+                User::query()
+                    ->where('email', '!=', 'admin@admin.com')
+                    ->get()
+                    ->each(fn (User $user) => $user->assignRole(Roles::User->value));
+            },
+            message: 'Syncing User roles...'
+        );
     }
 
     /**

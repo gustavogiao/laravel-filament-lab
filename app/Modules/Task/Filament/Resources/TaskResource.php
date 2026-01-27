@@ -82,6 +82,10 @@ final class TaskResource extends Resource
                     ->boolean()
                     ->label('Completed'),
 
+                TextColumn::make('user.name')
+                    ->label('Submitted By')
+                    ->sortable(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

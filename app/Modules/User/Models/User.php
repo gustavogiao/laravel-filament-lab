@@ -38,6 +38,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
  * @property CarbonInterface|null $two_factor_confirmed_at
+ * @property bool $is_blocked
+ * @property CarbonInterface|null $blocked_at
+ * @property string|null $blocked_by
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  * @property-read Collection|Role[] $roles
@@ -70,6 +73,9 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Mus
         'email',
         'password',
         'avatar_url',
+        'is_blocked',
+        'blocked_at',
+        'blocked_by',
     ];
 
     /**
@@ -93,6 +99,9 @@ final class User extends Authenticatable implements FilamentUser, HasAvatar, Mus
             'avatar_url' => 'string',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_blocked' => 'boolean',
+            'blocked_at' => 'datetime',
+            'blocked_by' => 'string',
             'remember_token' => 'string',
             'two_factor_secret' => 'string',
             'two_factor_recovery_codes' => 'string',

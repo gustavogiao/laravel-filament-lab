@@ -12,10 +12,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Cria o admin padrão para o sync:permissions
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
+            'password' => bcrypt('password'),
         ]);
 
         User::factory()->count(10)->create();

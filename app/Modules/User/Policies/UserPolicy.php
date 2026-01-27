@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\User\Policies;
 
 use App\Modules\Permissions\Enums\PermissionsEnum;
+use App\Modules\Permissions\Enums\Roles;
 use App\Modules\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -30,6 +31,12 @@ final class UserPolicy
     public function delete(User $user, User $model): bool
     {
         return $user->can(PermissionsEnum::Delete->buildPermissionFor(User::class));
+    }
+
+    public function block(User $user, User $model): bool
+    {
+        return $user->can(PermissionsEnum::Update->buildPermissionFor(User::class))
+            && ! $model->hasRole(Roles::SuperAdmin);
     }
 
     public function restore(User $user, User $model): bool

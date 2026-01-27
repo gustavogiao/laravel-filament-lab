@@ -12,10 +12,6 @@ final class ProjectSeeder extends Seeder
 {
     public function run(): void
     {
-        $userId = User::first()->id;
-
-        Project::factory()
-            ->count(20)
-            ->create(['owner_id' => $userId]);
+        Project::factory()->count(20)->create();
     }
 }

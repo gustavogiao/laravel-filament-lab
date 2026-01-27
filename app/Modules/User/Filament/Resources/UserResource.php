@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Filament\Resources;
 
+use App\Modules\User\Filament\Resources\UserResource\Pages\CreateAdmin;
 use App\Modules\User\Filament\Resources\UserResource\Pages\EditUser;
 use App\Modules\User\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Modules\User\Filament\Resources\UserResource\Pages\ViewUser;
@@ -12,6 +13,7 @@ use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -37,19 +39,27 @@ final class UserResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->schema(
-                [
-                    Section::make('User')
-                        ->schema([
-                            TextInput::make('name')
-                                ->required()
-                                ->maxLength(255),
+            ->schema([
+                Section::make('Admin')
+                    ->schema([
+                        TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
 
-                            TextInput::make('email')
-                                ->required()
-                                ->maxLength(255),
-                        ]),
-                ]);
+                        TextInput::make('email')
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('password')
+                            ->password()
+                            ->visible(fn($livewire) => $livewire instanceof CreateRecord)
+                            ->required(fn($livewire) => $livewire instanceof CreateRecord)
+                            ->minLength(8)
+                            ->maxLength(255)
+                            ->dehydrateStateUsing(fn($state) => $state ? bcrypt($state) : null)
+                            ->label('Password'),
+                    ]),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -83,6 +93,7 @@ final class UserResource extends Resource
     {
         return [
             'index' => ListUsers::route('/'),
+            'create' => CreateAdmin::route('/create'),
             'view' => ViewUser::route('/{record}'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
