@@ -19,7 +19,7 @@ final class ProjectFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->sentence(3),
-            'description' => $this->faker->optional()->paragraph(),
+            'description' => $this->faker->paragraph(),
             'is_active' => $this->faker->boolean(85),
             'owner_id' => User::inRandomOrder()->first()->id,
         ];
