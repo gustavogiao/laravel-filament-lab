@@ -14,7 +14,6 @@ final class UpdateProjectAction
         $project->name = $data->name;
         $project->description = $data->description;
         $project->is_active = $data->isActive;
-        $project->owner_id = $data->owner_id;
 
         $project->save();
 

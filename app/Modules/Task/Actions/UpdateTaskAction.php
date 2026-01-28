@@ -12,7 +12,6 @@ final readonly class UpdateTaskAction
         $task->title = $data->title;
         $task->description = $data->description;
         $task->is_completed = $data->is_completed;
-        $task->submitted_by_id = $data->submitted_by_id;
 
         $task->save();
 
