@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Project\Models;
 
 use App\Models\BaseModel;
+use App\Modules\Project\Enums\ProjectStatus;
 use App\Modules\Project\Policies\ProjectPolicy;
 use App\Modules\Task\Models\Task;
 use App\Modules\User\Models\User;
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $id
  * @property string $name
  * @property string|null $description
- * @property bool $is_active
+ * @property ProjectStatus $status
  * @property string $owner_id
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
@@ -50,6 +51,7 @@ final class Project extends BaseModel
         return [
             'name' => 'string',
             'description' => 'string',
+            'status' => ProjectStatus::class,
             'is_active' => 'boolean',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',

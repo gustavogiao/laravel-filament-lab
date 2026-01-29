@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Modules\Task\Models\Task;
@@ -7,7 +9,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Modules\Project\Models\Project;
 
-class TaskSeeder extends Seeder
+final class TaskSeeder extends Seeder
 {
     /**
      * Run the database seeds.

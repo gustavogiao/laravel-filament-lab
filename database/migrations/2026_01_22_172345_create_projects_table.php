@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('name');
             $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->enum('status', ['finished', 'in_progress', 'draft'])->default('draft');
             $table->foreignUuid('owner_id')->constrained('users')->cascadeOnDelete();
 
             $table->timestamps();

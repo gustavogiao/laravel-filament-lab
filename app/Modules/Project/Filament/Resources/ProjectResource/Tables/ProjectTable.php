@@ -22,9 +22,10 @@ class ProjectTable
                     ->searchable()
                     ->sortable(),
 
-                IconColumn::make('is_active')
-                    ->boolean()
-                    ->label('Active'),
+                TextColumn::make('status')
+                    ->badge()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('created_at')
                     ->dateTime()

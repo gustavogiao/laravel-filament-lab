@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Modules\Project\Filament\Resources\ProjectResource\RelationManagers;
 
 use Filament\Actions;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
@@ -33,11 +36,11 @@ final class TasksRelationManager extends RelationManager
                     ->since(),
             ])
             ->headerActions([
-                Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
             ->recordActions([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ]);
     }
 }

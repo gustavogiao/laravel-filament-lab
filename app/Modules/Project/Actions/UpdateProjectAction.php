@@ -13,7 +13,7 @@ final class UpdateProjectAction
     {
         $project->name = $data->name;
         $project->description = $data->description;
-        $project->is_active = $data->isActive;
+        $project->status = $data->status;
 
         $project->save();
 

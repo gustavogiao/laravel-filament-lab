@@ -2,6 +2,7 @@
 
 namespace App\Modules\User\Filament\Resources\UserResource\Tables;
 
+use App\Modules\Permissions\Enums\Roles;
 use App\Modules\User\Models\User;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -22,8 +23,12 @@ class UserTable
                     ->searchable(),
 
                 TextColumn::make('roles.name')
+                    ->label('Roles')
                     ->badge()
-                    ->label('Roles'),
+                    ->formatStateUsing(fn (string $state) => Roles::from($state)->getLabel())
+                    ->color(fn (string $state) => Roles::from($state)->getColor())
+                    ->icon(fn (string $state) => Roles::from($state)->getIcon())
+                    ->searchable(),
 
                 TextColumn::make('created_at')
                     ->dateTime()

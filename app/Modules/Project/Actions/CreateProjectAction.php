@@ -15,7 +15,7 @@ final class CreateProjectAction
 
         $project->name = $data->name;
         $project->description = $data->description;
-        $project->is_active = $data->isActive;
+        $project->status = $data->status;
         $project->owner_id = $data->owner_id;
 
         $project->save();
