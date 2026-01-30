@@ -27,5 +27,4 @@ final readonly class UserData
             password: $data['password'] ?? null,
         );
     }
-
 }

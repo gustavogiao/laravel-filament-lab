@@ -21,5 +21,4 @@ final class CreateTaskAction
 
         return $task;
     }
-
 }

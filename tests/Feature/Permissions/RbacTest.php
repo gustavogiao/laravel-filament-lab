@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Artisan;
 
 uses(RefreshDatabase::class);
 
-beforeEach(function () {
+beforeEach(function (): void {
     Artisan::call('sync:permissions');
 });
 
-it('can check if a user is a super admin or a normal user', function () {
+it('can check if a user is a super admin or a normal user', function (): void {
     $superAdmin = User::factory()->create();
     $superAdmin->assignRole(Roles::SuperAdmin->value);
 
@@ -27,7 +27,7 @@ it('can check if a user is a super admin or a normal user', function () {
         ->and($normalUser->hasRole(Roles::User))->toBeTrue();
 });
 
-it('grants full access to the super admin via gate before.', function () {
+it('grants full access to the super admin via gate before.', function (): void {
     $superAdmin = User::factory()->create();
     $superAdmin->assignRole(Roles::SuperAdmin->value);
 
@@ -37,7 +37,7 @@ it('grants full access to the super admin via gate before.', function () {
     expect($superAdmin->can('view', $project))->toBeTrue();
 });
 
-it('restricts access to the normal user based on permissions and ownership.', function () {
+it('restricts access to the normal user based on permissions and ownership.', function (): void {
     $user = User::factory()->create();
     $user->assignRole(Roles::User->value);
 

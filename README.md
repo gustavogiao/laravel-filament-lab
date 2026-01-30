@@ -1,7 +1,6 @@
 # Laravel Filament Lab
 
-This project is a laboratory for implementations of Laravel 12, Filament v5, and a custom RBAC (Role-Based Access Control) system.
-
+This is literally a Filament + Livewire project to improve my skills in the fantastic world of Laravel... it's a modular project, with a completely random domain, within what I feel like doing, considering what I want to achieve. In addition, I use PHP Rector, PHP Stan, PHP Pint, and best practices that I've learned during development and study.
 ## Requirements
 
 - PHP 8.3.6+
@@ -65,9 +64,50 @@ Has restricted permissions defined in `config/rbac.php`. Policies (e.g., `Projec
 
 ## Useful Commands
 
-- **Sync Permissions:** `php artisan sync:permissions`
-- **Code Formatting:** `vendor/bin/pint`
-- **Run Tests:** `php artisan test`
+- **Sync Permissions:**
+  ```bash
+  php artisan sync:permissions
+  ```
+- **Run Tests:**
+  ```bash
+  php artisan test
+  ```
+- **Run Pest Tests:**
+  ```bash
+  ./vendor/bin/pest
+  ```
+- **Run Pint (Code Style):**
+  ```bash
+  ./vendor/bin/pint
+  ```
+- **Run Rector (Code Refactoring):**
+  ```bash
+  ./vendor/bin/rector process
+  ```
+- **Run PHPStan (Static Analysis):**
+  ```bash
+  ./vendor/bin/phpstan analyse
+  ```
+- **Clear Cache:**
+  ```bash
+  php artisan cache:clear
+  ```
+- **Tinker (REPL):**
+  ```bash
+  php artisan tinker
+  ```
+- **Migrate Fresh & Seed:**
+  ```bash
+  php artisan migrate:fresh --seed
+  ```
+- **Serve (Local Server):**
+  ```bash
+  php artisan serve
+  ```
+- **Install Node Modules & Build Assets:**
+  ```bash
+  npm install && npm run build
+  ```
 
 ## Testing
 

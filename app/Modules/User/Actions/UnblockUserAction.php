@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\User\Actions;
 
-use App\Modules\User\DTOs\UserData;
 use App\Modules\User\Models\User;
 
 final class UnblockUserAction

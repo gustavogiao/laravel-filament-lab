@@ -21,6 +21,7 @@ final class EditProject extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Project
     {
         $data['owner_id'] = auth()->id();
+
         /** @var Project $record */
         return app(UpdateProjectAction::class)
             ->execute($record, ProjectData::fromArray($data));

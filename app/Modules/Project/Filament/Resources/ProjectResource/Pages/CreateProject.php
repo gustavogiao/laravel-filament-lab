@@ -20,6 +20,7 @@ final class CreateProject extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         $data['owner_id'] = auth()->id();
+
         return app(CreateProjectAction::class)
             ->execute(ProjectData::fromArray($data));
     }

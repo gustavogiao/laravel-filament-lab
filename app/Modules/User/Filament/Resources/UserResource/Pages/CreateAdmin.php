@@ -20,5 +20,4 @@ final class CreateAdmin extends CreateRecord
         return app(CreateUserAction::class)
             ->execute(UserData::fromArray($data));
     }
-
 }

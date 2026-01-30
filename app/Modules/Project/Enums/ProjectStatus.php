@@ -32,6 +32,15 @@ enum ProjectStatus: string implements HasColor, HasIcon, HasLabel
         };
     }
 
+    public function getChartColor(): string
+    {
+        return match ($this) {
+            self::Finished => Color::Green[500],
+            self::InProgress => Color::Yellow[500],
+            self::Draft => Color::Gray[500],
+        };
+    }
+
     public function getIcon(): Heroicon
     {
         return match ($this) {

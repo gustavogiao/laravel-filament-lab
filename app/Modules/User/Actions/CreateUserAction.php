@@ -25,5 +25,4 @@ final class CreateUserAction
 
         return $user;
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Modules\Permissions\Enums;
 
-use BackedEnum;
 use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;

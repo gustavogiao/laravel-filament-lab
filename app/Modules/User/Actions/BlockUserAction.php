@@ -15,9 +15,9 @@ final class BlockUserAction
         $actor = auth()->user();
 
         $user->update([
-                'is_blocked' => true,
-                'blocked_at' => now(),
-                'blocked_by' => $actor->id,
+            'is_blocked' => true,
+            'blocked_at' => now(),
+            'blocked_by' => $actor->id,
         ]);
 
         DB::table('sessions')

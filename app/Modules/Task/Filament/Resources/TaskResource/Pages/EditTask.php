@@ -19,6 +19,7 @@ final class EditTask extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Task
     {
         $data['submitted_by_id'] = auth()->id();
+
         /** @var Task $record */
         return app(UpdateTaskAction::class)
             ->execute($record, TaskData::fromArray($data));

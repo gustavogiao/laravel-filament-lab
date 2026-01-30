@@ -18,6 +18,7 @@ final class CreateTask extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         $data['submitted_by_id'] = auth()->id();
+
         return app(CreateTaskAction::class)
             ->execute(TaskData::fromArray($data));
     }

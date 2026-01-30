@@ -7,11 +7,11 @@ use App\Modules\Project\Models\Project;
 use App\Modules\Task\Models\Task;
 use App\Modules\User\Models\User;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->artisan('sync:permissions');
 });
 
-test('Super Admin can see any task', function () {
+test('Super Admin can see any task', function (): void {
     $admin = User::factory()->create();
     $admin->assignRole(Roles::SuperAdmin->value);
 
@@ -25,7 +25,7 @@ test('Super Admin can see any task', function () {
     expect($admin->can('view', $task))->toBeTrue();
 });
 
-test('User can see their own task', function () {
+test('User can see their own task', function (): void {
     $user = User::factory()->create();
     $user->assignRole(Roles::User->value);
 
@@ -38,7 +38,7 @@ test('User can see their own task', function () {
     expect($user->can('view', $task))->toBeTrue();
 });
 
-test('User can see tasks in their own project even if submitted by another user', function () {
+test('User can see tasks in their own project even if submitted by another user', function (): void {
     $owner = User::factory()->create();
     $owner->assignRole(Roles::User->value);
 
@@ -53,7 +53,7 @@ test('User can see tasks in their own project even if submitted by another user'
     expect($owner->can('view', $task))->toBeTrue();
 });
 
-test('User cannot see tasks from other projects', function () {
+test('User cannot see tasks from other projects', function (): void {
     $user = User::factory()->create();
     $user->assignRole(Roles::User->value);
 
@@ -67,7 +67,7 @@ test('User cannot see tasks from other projects', function () {
     expect($user->can('view', $task))->toBeFalse();
 });
 
-test('User can update their own task', function () {
+test('User can update their own task', function (): void {
     $user = User::factory()->create();
     $user->assignRole(Roles::User->value);
 
@@ -80,7 +80,7 @@ test('User can update their own task', function () {
     expect($user->can('update', $task))->toBeTrue();
 });
 
-test('User can update tasks in their project', function () {
+test('User can update tasks in their project', function (): void {
     $owner = User::factory()->create();
     $owner->assignRole(Roles::User->value);
 
