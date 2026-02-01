@@ -8,6 +8,7 @@ use App\Modules\Project\Filament\Resources\ProjectResource\Pages\CreateProject;
 use App\Modules\Project\Filament\Resources\ProjectResource\Pages\EditProject;
 use App\Modules\Project\Filament\Resources\ProjectResource\Pages\ListProjects;
 use App\Modules\Project\Filament\Resources\ProjectResource\Pages\ViewProject;
+use App\Modules\Project\Filament\Resources\ProjectResource\RelationManagers\TasksRelationManager;
 use App\Modules\Project\Filament\Resources\ProjectResource\Schemas\ProjectForm;
 use App\Modules\Project\Filament\Resources\ProjectResource\Tables\ProjectTable;
 use App\Modules\Project\Models\Project;
@@ -30,7 +31,7 @@ final class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ProjectResource\RelationManagers\TasksRelationManager::class,
+            TasksRelationManager::class,
         ];
     }
 

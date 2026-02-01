@@ -12,7 +12,6 @@ use RuntimeException;
  */
 final class VitalSignReadingFactory extends Factory
 {
-
     protected $model = VitalSignReading::class;
 
     /**

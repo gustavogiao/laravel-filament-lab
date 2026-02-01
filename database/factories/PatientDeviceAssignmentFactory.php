@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 final class PatientDeviceAssignmentFactory extends Factory
 {
-
     protected $model = PatientDeviceAssignment::class;
 
     /**

@@ -18,7 +18,6 @@ use Illuminate\Support\Carbon;
  * @property bool $is_active
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
- *
  * @property-read Patient $patient
  * @property-read Device $device
  */

@@ -21,7 +21,6 @@ use Illuminate\Support\Carbon;
  * @property float|null $body_temperature
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
- *
  * @property-read Patient $patient
  * @property-read Device $device
  */

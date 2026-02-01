@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 final class DeviceFactory extends Factory
 {
-
     protected $model = Device::class;
 
     /**
