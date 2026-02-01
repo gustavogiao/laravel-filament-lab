@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Telemetry\Models;
 
 use App\Models\BaseModel;
+use App\Modules\Telemetry\Observers\PatientDeviceAssignmentObserver;
 use Database\Factories\PatientDeviceAssignmentFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -24,6 +25,13 @@ use Illuminate\Support\Carbon;
 final class PatientDeviceAssignment extends BaseModel
 {
     protected $table = 'patient_device_assignments';
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::observe(PatientDeviceAssignmentObserver::class);
+    }
 
     protected static function newFactory(): PatientDeviceAssignmentFactory
     {

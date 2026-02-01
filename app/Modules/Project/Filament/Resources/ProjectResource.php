@@ -24,6 +24,8 @@ final class ProjectResource extends Resource
 
     protected static ?string $navigationLabel = 'Projects';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Briefcase;
 
     protected static ?string $slug = 'projects';

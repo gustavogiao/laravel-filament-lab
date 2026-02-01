@@ -19,6 +19,8 @@ final class PermissionResource extends Resource
 
     protected static ?string $navigationLabel = 'Permissions';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::LockClosed;
 
     protected static ?string $slug = 'permissions';

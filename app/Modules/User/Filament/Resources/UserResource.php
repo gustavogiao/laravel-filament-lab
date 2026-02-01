@@ -23,6 +23,8 @@ final class UserResource extends Resource
 
     protected static ?string $navigationLabel = 'Users';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::User;
 
     public static function getNavigationGroup(): ?string

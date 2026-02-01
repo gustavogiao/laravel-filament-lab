@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Modules\Telemetry\Filament\Resources\Patients\RelationManagers;
 
-use App\Modules\Telemetry\Models\Device;
+use App\Modules\Telemetry\Actions\AssignDeviceToPatientAction;
+use App\Modules\Telemetry\Actions\ReactivateDeviceAssignmentAction;
+use App\Modules\Telemetry\Actions\UnassignDeviceFromPatientAction;
+use App\Modules\Telemetry\Filament\Resources\DeviceAssignment\Schemas\DeviceAssignmentForm;
+use App\Modules\Telemetry\Filament\Resources\DeviceAssignment\Tables\DeviceAssignmentTable;
+use App\Modules\Telemetry\Models\Patient;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 final class DevicesRelationManager extends RelationManager
@@ -21,72 +23,46 @@ final class DevicesRelationManager extends RelationManager
 
     protected static ?string $title = 'Devices';
 
-    // to do refactor the table and form in their own classes and dtos etc
-
     public function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('device.device_uid')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('assigned_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('unassigned_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->placeholder('N/A'),
-                TextColumn::make('is_active')
-                    ->label('Active')
-                    ->badge()
-                    ->color(fn (bool $state): string => $state ? 'success' : 'danger')
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'Active' : 'Inactive'),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable(),
-            ])
+        return DeviceAssignmentTable::make($table)
             ->headerActions([
                 CreateAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        $data['assigned_at'] = now();
+                    ->label('Assign Device')
+                    ->using(function (array $data): void {
+                        /** @var Patient $patient */
+                        $patient = $this->getOwnerRecord();
 
-                        return $data;
+                        app(AssignDeviceToPatientAction::class)
+                            ->execute($patient, $data['device_id']);
                     }),
             ])
             ->recordActions([
                 EditAction::make()
-                    ->mutateFormDataUsing(function (array $data, $record): array {
+                    ->label('Change Status')
+                    ->using(function (array $data, $record): void {
+                        /** @var Patient $patient */
+                        $patient = $this->getOwnerRecord();
+
                         if ($record->is_active && ! $data['is_active']) {
-                            $data['unassigned_at'] = now();
-                        } elseif (! $record->is_active && $data['is_active']) {
-                            $data['assigned_at'] = now();
-                            $data['unassigned_at'] = null;
+                            app(UnassignDeviceFromPatientAction::class)
+                                ->execute($patient, $record->device_id);
                         }
 
-                        return $data;
+                        if (! $record->is_active && $data['is_active']) {
+                            app(ReactivateDeviceAssignmentAction::class)
+                                ->execute($patient, $record);
+                        }
                     }),
-                DeleteAction::make(),
+
+                DeleteAction::make()
+                    ->label('Remove Assignment')
+                    ->requiresConfirmation(),
             ]);
     }
 
     public function form(Schema $schema): Schema
     {
-        return $schema
-            ->schema([
-                Select::make('device_id')
-                    ->label('Device')
-                    ->options(fn () => Device::pluck('device_uid', 'id'))
-                    ->searchable()
-                    ->required()
-                    ->hiddenOn('edit'),
-                Toggle::make('is_active')
-                    ->label('Active')
-                    ->default(true)
-                    ->live(),
-            ]);
+        return DeviceAssignmentForm::make($schema);
     }
 }

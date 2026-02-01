@@ -18,14 +18,14 @@ class TaskTable
     {
         return $table
             ->columns([
+                TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('project.name')
                     ->label('Project')
                     ->sortable()
                     ->searchable(),
-
-                TextColumn::make('title')
-                    ->searchable()
-                    ->sortable(),
 
                 IconColumn::make('is_completed')
                     ->boolean()

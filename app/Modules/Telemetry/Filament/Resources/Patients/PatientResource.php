@@ -22,9 +22,14 @@ final class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
 
     protected static ?string $recordTitleAttribute = 'first_name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Telemetry';
+    }
 
     public static function form(Schema $schema): Schema
     {

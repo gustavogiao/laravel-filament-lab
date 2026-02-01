@@ -20,9 +20,14 @@ final class DeviceResource extends Resource
 {
     protected static ?string $model = Device::class;
 
-    protected static string|null|\BackedEnum $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|null|\BackedEnum $navigationIcon = Heroicon::DeviceTablet;
 
     protected static ?string $recordTitleAttribute = 'device_uid';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Telemetry';
+    }
 
     public static function form(Schema $schema): Schema
     {

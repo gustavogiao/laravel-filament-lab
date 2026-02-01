@@ -23,6 +23,8 @@ final class TaskResource extends Resource
 
     protected static ?string $navigationLabel = 'Tasks';
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CheckCircle;
 
     protected static ?string $slug = 'tasks';

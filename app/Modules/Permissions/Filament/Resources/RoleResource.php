@@ -19,6 +19,8 @@ final class RoleResource extends Resource
 
     protected static ?string $navigationLabel = 'Roles';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ShieldCheck;
 
     protected static ?string $slug = 'roles';
