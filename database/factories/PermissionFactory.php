@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Date;
 /**
  * @extends Factory<Permission>
  */
-class PermissionFactory extends Factory
+final class PermissionFactory extends Factory
 {
     protected $model = Permission::class;
 

@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Date;
 /**
  * @extends Factory<Role>
  */
-class RoleFactory extends Factory
+final class RoleFactory extends Factory
 {
+
+    protected $model = Role::class;
     /**
      * Define the model's default state.
      *
