@@ -30,7 +30,7 @@ final class PatientDeviceAssignment extends BaseModel
     {
         parent::boot();
 
-        static::observe(PatientDeviceAssignmentObserver::class);
+        self::observe(PatientDeviceAssignmentObserver::class);
     }
 
     protected static function newFactory(): PatientDeviceAssignmentFactory
