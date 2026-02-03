@@ -13,10 +13,15 @@ use App\Modules\Telemetry\Filament\Widgets\RespiratoryRateChart;
 use App\Modules\Telemetry\Filament\Widgets\VitalSignsStatsWidget;
 use App\Modules\Telemetry\Models\Patient;
 use App\Modules\Telemetry\Models\VitalSignReading;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Resources\Pages\Page;
 
-final class PatientDashboard extends Page
+final class PatientDashboard extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static string $resource = VitalSignReadingResource::class;
 
     protected string $view = 'filament.resources.vital-sign-reading.pages.patient-dashboard';
@@ -30,6 +35,19 @@ final class PatientDashboard extends Page
     protected ?bool $patientHasData = null;
 
     protected ?array $patients = null;
+
+    protected function getFormSchema(): array
+    {
+        return [
+            Select::make('patientId')
+                ->label('Select a patient')
+                ->options(fn () => $this->getPatients())
+                ->searchable()
+                ->placeholder('Select a patient...')
+                ->live()
+                ->native(false),
+        ];
+    }
 
     public function updatedPatientId(?string $value): void
     {

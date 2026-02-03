@@ -9,17 +9,7 @@
         </x-slot>
 
         <div class="max-w-xl space-y-3">
-            <select
-                wire:model.live="patientId"
-                id="patientId"
-                class="fi-input block w-full rounded-xl"
-            >
-                <option value="">Select a patient...</option>
-
-                @foreach ($this->getPatients() as $id => $name)
-                    <option value="{{ $id }}">{{ $name }}</option>
-                @endforeach
-            </select>
+            {{ $this->form }}
 
             <div wire:loading wire:target="patientId" class="flex items-center gap-2 text-sm text-gray-500">
                 <x-filament::loading-indicator class="h-4 w-4" />
