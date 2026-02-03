@@ -12,7 +12,6 @@ final class UpdateDeviceAction
     public function execute(Device $device, DeviceData $data): Device
     {
         $device->device_uid = $data->device_uid;
-        $device->api_token_hash = $data->api_token_hash;
 
         $device->save();
 
