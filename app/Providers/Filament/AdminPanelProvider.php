@@ -2,6 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Modules\Project\Filament\Widgets\ProjectsChart;
+use App\Modules\Project\Filament\Widgets\ProjectsStats;
+use App\Modules\Task\Filament\Widget\TasksChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -59,10 +62,6 @@ class AdminPanelProvider extends PanelProvider
                 in: app_path('Modules'),
                 for: 'App\\Modules'
             )
-            ->discoverWidgets(
-                in: app_path('Modules'),
-                for: 'App\\Modules'
-            )
             ->discoverLivewireComponents(
                 in: app_path('Livewire'),
                 for: 'App\\Livewire'
@@ -93,8 +92,10 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+                ProjectsStats::class,
+                ProjectsChart::class,
+                TasksChart::class,
             ])
-
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

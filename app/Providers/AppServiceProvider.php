@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use App\Modules\Permissions\Enums\Roles;
-use App\Modules\User\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Jeffgreco13\FilamentBreezy\Livewire\BrowserSessions;
@@ -32,14 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::before(fn (User $user) => $user->hasRole(Roles::SuperAdmin) ? true : null); // total access
         $this->configureDefaults();
-        // TO:DO - move to filament later, now its this shit but later will be better
-        Livewire::component('personal_info', PersonalInfo::class);
-        Livewire::component('update_password', UpdatePassword::class);
-        Livewire::component('two_factor_authentication', TwoFactorAuthentication::class);
-        Livewire::component('sanctum_tokens', SanctumTokens::class);
-        Livewire::component('browser_sessions', BrowserSessions::class);
     }
 
     protected function configureDefaults(): void
