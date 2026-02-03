@@ -57,12 +57,21 @@ final class Device extends BaseModel
     {
         return $this->belongsToMany(
             Patient::class,
-            'patient_devices_assignments',
+            'patient_device_assignments',
             'device_id',
             'patient_id'
         )
             ->withPivot(['assigned_at', 'unassigned_at', 'is_active'])
             ->withTimestamps();
+    }
+
+    public function activePatient(): ?Patient
+    {
+        $patient = $this->patients()
+            ->wherePivot('is_active', true)
+            ->first();
+
+        return $patient instanceof Patient ? $patient : null;
     }
 
     public function vitalSignReadings(): HasMany

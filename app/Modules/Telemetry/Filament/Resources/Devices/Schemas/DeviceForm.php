@@ -15,9 +15,8 @@ class DeviceForm
                 Section::make()
                     ->schema([
                         TextInput::make('device_uid')
-                            ->required()
-                            ->maxLength(255),
-                        TextInput::make('api_token_hash')
+                            ->label('Device UID')
+                            ->helperText('Unique identifier for this device.')
                             ->required()
                             ->maxLength(255),
                     ])
