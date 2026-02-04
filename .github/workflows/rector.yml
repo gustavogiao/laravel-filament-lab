@@ -22,11 +22,6 @@ on:
         required: false
         type: boolean
         default: false
-    secrets:
-      FLUX_USERNAME:
-        required: false
-      FLUX_LICENSE_KEY:
-        required: false
 
 permissions: {}
 
@@ -60,10 +55,6 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - name: Add Flux Credentials
-        if: secrets.FLUX_USERNAME != '' && secrets.FLUX_LICENSE_KEY != ''
-        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
-
       - name: Install composer dependencies
         uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
         with:
@@ -95,7 +86,7 @@ jobs:
         run: |
           echo "### Rector Refactoring Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Rector found code that could be refactored. Run locally with:" >> $GITHUB_STEP_SUMMARY
+          echo "Rector encontrou código que pode ser refatorado. Rode localmente com:" >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           echo "vendor/bin/rector process" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY

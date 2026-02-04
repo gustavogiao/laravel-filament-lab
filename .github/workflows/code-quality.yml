@@ -47,9 +47,6 @@ jobs:
     name: Code Style (Pint)
     needs: setup
     uses: ./.github/workflows/pint.yml
-    secrets:
-      FLUX_USERNAME: ${{ secrets.FLUX_USERNAME }}
-      FLUX_LICENSE_KEY: ${{ secrets.FLUX_LICENSE_KEY }}
     with:
       PHP_VERSION: ${{ needs.setup.outputs.php_version }}
       PHP_EXTENSIONS: ${{ needs.setup.outputs.php_extensions }}
@@ -62,9 +59,6 @@ jobs:
     name: Static Analysis (PHPStan)
     needs: setup
     uses: ./.github/workflows/phpstan.yml
-    secrets:
-      FLUX_USERNAME: ${{ secrets.FLUX_USERNAME }}
-      FLUX_LICENSE_KEY: ${{ secrets.FLUX_LICENSE_KEY }}
     with:
       PHP_VERSION: ${{ needs.setup.outputs.php_version }}
       PHP_EXTENSIONS: ${{ needs.setup.outputs.php_extensions }}
@@ -76,9 +70,6 @@ jobs:
     name: Refactoring (Rector)
     needs: setup
     uses: ./.github/workflows/rector.yml
-    secrets:
-      FLUX_USERNAME: ${{ secrets.FLUX_USERNAME }}
-      FLUX_LICENSE_KEY: ${{ secrets.FLUX_LICENSE_KEY }}
     with:
       PHP_VERSION: ${{ needs.setup.outputs.php_version }}
       PHP_EXTENSIONS: ${{ needs.setup.outputs.php_extensions }}

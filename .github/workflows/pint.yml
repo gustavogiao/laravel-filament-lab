@@ -22,11 +22,6 @@ on:
         required: false
         type: boolean
         default: false
-    secrets:
-      FLUX_USERNAME:
-        required: false
-      FLUX_LICENSE_KEY:
-        required: false
 
 permissions: {}
 
@@ -59,10 +54,6 @@ jobs:
           ini-values: ${{ inputs.PHP_INI_PROPERTIES }}
           coverage: none
           tools: composer:v2, cs2pr
-
-      - name: Add Flux Credentials
-        if: secrets.FLUX_USERNAME != '' && secrets.FLUX_LICENSE_KEY != ''
-        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
 
       - name: Install composer dependencies
         uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
