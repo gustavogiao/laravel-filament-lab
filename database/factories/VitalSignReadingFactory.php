@@ -28,7 +28,7 @@ final class VitalSignReadingFactory extends Factory
             ->inRandomOrder()
             ->firstOrFail();
 
-        if (! $patient || ! $patient->activeDevice()) {
+        if (! $patient->activeDevice()) {
             throw new RuntimeException('No patient with active device found.');
         }
 

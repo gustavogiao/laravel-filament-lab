@@ -6,9 +6,14 @@ use App\Modules\Permissions\Enums\Roles;
 use App\Modules\Project\Models\Project;
 use App\Modules\Task\Models\Task;
 use App\Modules\User\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Pest\Laravel\artisan;
+
+uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
-    $this->artisan('sync:permissions');
+    artisan('sync:permissions');
 });
 
 test('Super Admin can see any task', function (): void {

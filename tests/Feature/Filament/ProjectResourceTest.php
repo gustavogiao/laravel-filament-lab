@@ -11,38 +11,40 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
-beforeEach(function (): void {
+$user = null;
+
+beforeEach(function () use (&$user): void {
     Role::create(['name' => Roles::SuperAdmin->value, 'guard_name' => 'web']);
-    $this->user = User::factory()->create();
-    $this->user->assignRole(Roles::SuperAdmin->value);
+    $user = User::factory()->create();
+    $user->assignRole(Roles::SuperAdmin->value);
 });
 
-it('can list projects', function (): void {
-    Project::factory()->count(5)->create(['owner_id' => $this->user->id]);
+it('can list projects', function () use (&$user): void {
+    Project::factory()->count(5)->create(['owner_id' => $user->id]);
 
-    actingAs($this->user)
+    actingAs($user)
         ->get(ProjectResource::getUrl('index'))
         ->assertSuccessful();
 });
 
-it('has a create button on the list page', function (): void {
-    actingAs($this->user)
+it('has a create button on the list page', function () use (&$user): void {
+    actingAs($user)
         ->get(ProjectResource::getUrl('index'))
         ->assertSuccessful()
         ->assertSee('New project')
         ->assertSee('projects/create');
 });
 
-it('has edit and delete actions in the table', function (): void {
-    $project = Project::factory()->create(['owner_id' => $this->user->id]);
+it('has edit and delete actions in the table', function () use (&$user): void {
+    $project = Project::factory()->create(['owner_id' => $user->id]);
 
     Livewire::test(ListProjects::class)
         ->assertTableActionExists('edit', record: $project)
         ->assertTableActionExists('delete', record: $project);
 });
 
-it('has name and description fields in the form', function (): void {
-    actingAs($this->user);
+it('has name and description fields in the form', function () use (&$user): void {
+    actingAs($user);
 
     Livewire::test(CreateProject::class)
         ->assertSee('name')

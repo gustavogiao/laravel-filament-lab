@@ -24,8 +24,8 @@ return new class extends Migration
             $table->decimal('body_temperature')->nullable();
             $table->timestamps();
 
-            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
-            $table->foreign('device_id')->references('id')->on('devices')->onDelete('cascade');
+            $table->foreign('patient_id')->references('id')->on('patients')->cascadeOnDelete();
+            $table->foreign('device_id')->references('id')->on('devices')->cascadeOnDelete();
         });
     }
 
