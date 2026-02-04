@@ -25,7 +25,7 @@ final class RoleResource extends Resource
 
     protected static ?string $slug = 'roles';
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string
     {
         return 'Security';
     }

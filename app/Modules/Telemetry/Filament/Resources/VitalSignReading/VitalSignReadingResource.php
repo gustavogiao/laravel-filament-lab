@@ -20,7 +20,7 @@ final class VitalSignReadingResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Vital Signals';
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string
     {
         return 'Telemetry';
     }

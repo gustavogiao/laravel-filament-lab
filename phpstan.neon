@@ -1,0 +1,26 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - app
+        - config
+        - database
+        - routes
+        - tests
+
+    excludePaths:
+        - app/Providers/AppServiceProvider.php
+        - bootstrap
+        - storage
+        - vendor
+
+    # Laravel specific
+    noUnnecessaryCollectionCall: true
+    noUnnecessaryCollectionCallOnly: []
+    noUnnecessaryCollectionCallExcept: []
+
+    # Ignore errors for generated IDE helper files
+    ignoreErrors:
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model#'

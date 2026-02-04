@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Telemetry\Actions;
 
 use App\Modules\Telemetry\Models\Device;
+use App\Modules\Telemetry\Models\Patient;
 use App\Modules\Telemetry\Models\VitalSignReading;
 
 final class RecordVitalSignsAction
@@ -13,12 +14,17 @@ final class RecordVitalSignsAction
     {
         $patient = $device->activePatient();
 
-        abort_if(! $patient, 422, 'Device not assigned to any active patient');
+        if (! $patient instanceof Patient) {
+            abort(422, 'Device not assigned to any active patient');
+        }
 
-        return $patient->vitalSignReadings()->create([
+        /** @var VitalSignReading $reading */
+        $reading = $patient->vitalSignReadings()->create([
             ...$data,
             'device_id' => $device->id,
             'recorded_at' => $data['recorded_at'] ?? now(),
         ]);
+
+        return $reading;
     }
 }

@@ -12,6 +12,12 @@ class Permission extends BasePermission
     /** @use HasFactory<PermissionFactory> */
     use HasFactory;
 
+    public string $resource;
+
+    public string $action;
+
+    public string $resource_group;
+
     /** @return Attribute<string, void> */
     protected function resourceModel(): Attribute
     {

@@ -26,7 +26,7 @@ final class PatientResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'first_name';
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string
     {
         return 'Telemetry';
     }

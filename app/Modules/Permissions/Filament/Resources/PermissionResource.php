@@ -25,7 +25,7 @@ final class PermissionResource extends Resource
 
     protected static ?string $slug = 'permissions';
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string
     {
         return 'Security';
     }

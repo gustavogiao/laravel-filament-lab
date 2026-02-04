@@ -1,0 +1,119 @@
+name: Rector
+
+on:
+  workflow_call:
+    inputs:
+      PHP_VERSION:
+        required: true
+        type: string
+      PHP_EXTENSIONS:
+        required: true
+        type: string
+      PHP_INI_PROPERTIES:
+        required: true
+        type: string
+      COMPOSER_FLAGS:
+        required: true
+        type: string
+      CACHE_KEY:
+        required: true
+        type: string
+      AUTO_FIX:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      FLUX_USERNAME:
+        required: false
+      FLUX_LICENSE_KEY:
+        required: false
+
+permissions: {}
+
+jobs:
+  run:
+    name: Run Rector Refactoring
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      checks: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-rector
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@c541c155eee45413f5b09a52248675b1a2575231 # v2.31.1
+        with:
+          php-version: ${{ inputs.PHP_VERSION }}
+          extensions: ${{ inputs.PHP_EXTENSIONS }}
+          ini-values: ${{ inputs.PHP_INI_PROPERTIES }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Add Flux Credentials
+        if: secrets.FLUX_USERNAME != '' && secrets.FLUX_LICENSE_KEY != ''
+        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
+        with:
+          composer-options: ${{ inputs.COMPOSER_FLAGS }}
+          custom-cache-key: ${{ inputs.CACHE_KEY }}
+
+      - name: Run Rector (Dry Run)
+        if: ${{ !inputs.AUTO_FIX }}
+        run: |
+          vendor/bin/rector process --dry-run --output-format=github
+
+      - name: Run Rector (Apply Changes)
+        if: ${{ inputs.AUTO_FIX }}
+        run: |
+          vendor/bin/rector process
+
+      - name: Commit Rector Changes
+        if: ${{ inputs.AUTO_FIX }}
+        uses: stefanzweifel/git-auto-commit-action@8621497c8c39c72f3e2a999a26b4ca1b5058a842 # v5.0.1
+        with:
+          commit_message: 'refactor: apply Rector refactoring'
+          commit_options: '--no-verify'
+          file_pattern: '*.php'
+          commit_user_name: 'github-actions[bot]'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Run Rector (Generate Report on Failure)
+        if: failure() && !inputs.AUTO_FIX
+        run: |
+          echo "### Rector Refactoring Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Rector found code that could be refactored. Run locally with:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "vendor/bin/rector process" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          vendor/bin/rector process --dry-run --output-format=console
+
+      - name: Output Rector Summary
+        if: always()
+        run: |
+          echo "### Rector Automated Refactoring" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.AUTO_FIX }}" == "true" ]; then
+            echo "Auto-fix mode enabled - Changes have been committed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Dry-run mode - No changes applied" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Configuration:**" >> $GITHUB_STEP_SUMMARY
+          echo "- PHP Version: ${{ inputs.PHP_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Type Coverage Level: 0" >> $GITHUB_STEP_SUMMARY
+          echo "- Dead Code Level: 0" >> $GITHUB_STEP_SUMMARY
+          echo "- Code Quality Level: 0" >> $GITHUB_STEP_SUMMARY

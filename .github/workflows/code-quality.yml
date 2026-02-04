@@ -1,0 +1,112 @@
+name: Code Quality
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - components
+  pull_request:
+    branches:
+      - main
+      - develop
+      - components
+  workflow_dispatch:
+    inputs:
+      auto_fix:
+        description: 'Auto-fix issues (Pint & Rector)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  checks: write
+
+jobs:
+  setup:
+    name: Setup Configuration
+    runs-on: ubuntu-latest
+    outputs:
+      php_version: ${{ steps.config.outputs.php_version }}
+      php_extensions: ${{ steps.config.outputs.php_extensions }}
+      php_ini_properties: ${{ steps.config.outputs.php_ini_properties }}
+      composer_flags: ${{ steps.config.outputs.composer_flags }}
+      cache_key: ${{ steps.config.outputs.cache_key }}
+    steps:
+      - name: Set Configuration
+        id: config
+        run: |
+          echo "php_version=8.4" >> $GITHUB_OUTPUT
+          echo "php_extensions=mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, json, zip" >> $GITHUB_OUTPUT
+          echo "php_ini_properties=error_reporting=E_ALL, display_errors=On, memory_limit=2G" >> $GITHUB_OUTPUT
+          echo "composer_flags=--no-interaction --no-progress --prefer-dist --optimize-autoloader" >> $GITHUB_OUTPUT
+          echo "cache_key=${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_OUTPUT
+
+  pint:
+    name: Code Style (Pint)
+    needs: setup
+    uses: ./.github/workflows/pint.yml
+    secrets:
+      FLUX_USERNAME: ${{ secrets.FLUX_USERNAME }}
+      FLUX_LICENSE_KEY: ${{ secrets.FLUX_LICENSE_KEY }}
+    with:
+      PHP_VERSION: ${{ needs.setup.outputs.php_version }}
+      PHP_EXTENSIONS: ${{ needs.setup.outputs.php_extensions }}
+      PHP_INI_PROPERTIES: ${{ needs.setup.outputs.php_ini_properties }}
+      COMPOSER_FLAGS: ${{ needs.setup.outputs.composer_flags }}
+      CACHE_KEY: ${{ needs.setup.outputs.cache_key }}
+      AUTO_FIX: ${{ github.event.inputs.auto_fix == 'true' || false }}
+
+  phpstan:
+    name: Static Analysis (PHPStan)
+    needs: setup
+    uses: ./.github/workflows/phpstan.yml
+    secrets:
+      FLUX_USERNAME: ${{ secrets.FLUX_USERNAME }}
+      FLUX_LICENSE_KEY: ${{ secrets.FLUX_LICENSE_KEY }}
+    with:
+      PHP_VERSION: ${{ needs.setup.outputs.php_version }}
+      PHP_EXTENSIONS: ${{ needs.setup.outputs.php_extensions }}
+      PHP_INI_PROPERTIES: ${{ needs.setup.outputs.php_ini_properties }}
+      COMPOSER_FLAGS: ${{ needs.setup.outputs.composer_flags }}
+      CACHE_KEY: ${{ needs.setup.outputs.cache_key }}
+
+  rector:
+    name: Refactoring (Rector)
+    needs: setup
+    uses: ./.github/workflows/rector.yml
+    secrets:
+      FLUX_USERNAME: ${{ secrets.FLUX_USERNAME }}
+      FLUX_LICENSE_KEY: ${{ secrets.FLUX_LICENSE_KEY }}
+    with:
+      PHP_VERSION: ${{ needs.setup.outputs.php_version }}
+      PHP_EXTENSIONS: ${{ needs.setup.outputs.php_extensions }}
+      PHP_INI_PROPERTIES: ${{ needs.setup.outputs.php_ini_properties }}
+      COMPOSER_FLAGS: ${{ needs.setup.outputs.composer_flags }}
+      CACHE_KEY: ${{ needs.setup.outputs.cache_key }}
+      AUTO_FIX: ${{ github.event.inputs.auto_fix == 'true' || false }}
+
+  quality-summary:
+    name: Quality Check Summary
+    runs-on: ubuntu-latest
+    needs: [pint, phpstan, rector]
+    if: always()
+    steps:
+      - name: Check Quality Results
+        run: |
+          echo "### Code Quality Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Tool | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Pint (Code Style) | ${{ needs.pint.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| PHPStan (Static Analysis) | ${{ needs.phpstan.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Rector (Refactoring) | ${{ needs.rector.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.pint.result }}" != "success" ] || [ "${{ needs.phpstan.result }}" != "success" ] || [ "${{ needs.rector.result }}" != "success" ]; then
+            echo "Some quality checks failed. Please review the logs above." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "All quality checks passed!" >> $GITHUB_STEP_SUMMARY
+          fi

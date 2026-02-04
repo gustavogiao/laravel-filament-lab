@@ -11,6 +11,7 @@ use Database\Factories\DeviceFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -70,13 +71,11 @@ final class Device extends BaseModel
             ->withTimestamps();
     }
 
-    public function activePatient(): ?Patient
+    public function activePatient(): ?Model
     {
-        $patient = $this->patients()
+        return $this->patients()
             ->wherePivot('is_active', true)
             ->first();
-
-        return $patient instanceof Patient ? $patient : null;
     }
 
     public function vitalSignReadings(): HasMany

@@ -27,7 +27,7 @@ final class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::User;
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string
     {
         return 'Security';
     }

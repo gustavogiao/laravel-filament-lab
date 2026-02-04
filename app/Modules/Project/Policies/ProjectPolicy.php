@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Project\Policies;
 
 use App\Modules\Permissions\Enums\PermissionsEnum;
+use App\Modules\Project\Enums\ProjectStatus;
 use App\Modules\Project\Models\Project;
 use App\Modules\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -27,7 +28,7 @@ final class ProjectPolicy
 
     public function update(User $user, Project $project): bool
     {
-        if ($project->is_archived) {
+        if ($project->status === ProjectStatus::Finished) {
             return false;
         }
 
@@ -43,7 +44,7 @@ final class ProjectPolicy
 
     public function archive(User $user, Project $project): bool
     {
-        if ($project->is_archived) {
+        if ($project->status === ProjectStatus::Finished) {
             return false;
         }
 

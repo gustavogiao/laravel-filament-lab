@@ -24,7 +24,7 @@ final class DeviceResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'device_uid';
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string
     {
         return 'Telemetry';
     }

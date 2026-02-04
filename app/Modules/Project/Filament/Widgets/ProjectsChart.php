@@ -22,7 +22,7 @@ final class ProjectsChart extends ChartWidget
 
         return [
             'labels' => collect($statuses)
-                ->map(fn (ProjectStatus $status) => $status->getLabel() ?? 'Desconhecido')
+                ->map(fn (ProjectStatus $status) => $status->getLabel())
                 ->toArray(),
 
             'datasets' => [

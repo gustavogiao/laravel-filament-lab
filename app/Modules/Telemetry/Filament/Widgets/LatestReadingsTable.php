@@ -22,7 +22,7 @@ final class LatestReadingsTable extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected function getTableQuery(): ?Builder
+    protected function getTableQuery(): Builder
     {
         return LatestReadingsQuery::forPatient($this->patientId);
     }

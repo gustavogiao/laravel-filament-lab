@@ -26,10 +26,13 @@ final class AssignDeviceToPatientAction
                 'unassigned_at' => now(),
             ]);
 
-        return $patient->deviceAssignments()->create([
+        /** @var PatientDeviceAssignment $assignment */
+        $assignment = $patient->deviceAssignments()->create([
             'device_id' => $deviceId,
             'assigned_at' => now(),
             'is_active' => true,
         ]);
+
+        return $assignment;
     }
 }

@@ -1,0 +1,75 @@
+name: PHPStan
+
+on:
+  workflow_call:
+    inputs:
+      PHP_VERSION:
+        required: true
+        type: string
+      PHP_EXTENSIONS:
+        required: true
+        type: string
+      PHP_INI_PROPERTIES:
+        required: true
+        type: string
+      COMPOSER_FLAGS:
+        required: true
+        type: string
+      CACHE_KEY:
+        required: true
+        type: string
+    secrets:
+      FLUX_USERNAME:
+        required: false
+      FLUX_LICENSE_KEY:
+        required: false
+
+permissions: {}
+
+jobs:
+  run:
+    name: Run PHPStan Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      checks: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-phpstan
+      cancel-in-progress: true
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@c541c155eee45413f5b09a52248675b1a2575231 # v2.31.1
+        with:
+          php-version: ${{ inputs.PHP_VERSION }}
+          extensions: ${{ inputs.PHP_EXTENSIONS }}
+          ini-values: ${{ inputs.PHP_INI_PROPERTIES }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Add Flux Credentials
+        if: secrets.FLUX_USERNAME != '' && secrets.FLUX_LICENSE_KEY != ''
+        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
+        with:
+          composer-options: ${{ inputs.COMPOSER_FLAGS }}
+          custom-cache-key: ${{ inputs.CACHE_KEY }}
+
+      - name: Run PHPStan
+        run: |
+          vendor/bin/phpstan analyse --ansi --error-format=github --memory-limit=2G
+
+      - name: Run PHPStan (with baseline generation on failure)
+        if: failure()
+        run: |
+          echo "::warning::PHPStan found errors. Consider generating a baseline with: vendor/bin/phpstan analyse --generate-baseline"
+          vendor/bin/phpstan analyse --ansi --error-format=table

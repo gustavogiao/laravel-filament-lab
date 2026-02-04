@@ -10,6 +10,7 @@ use Database\Factories\PatientFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
@@ -77,13 +78,11 @@ final class Patient extends BaseModel
         return $this->hasMany(VitalSignReading::class, 'patient_id', 'id');
     }
 
-    public function activeDevice(): ?Device
+    public function activeDevice(): ?Model
     {
-        $device = $this->devices()
+        return $this->devices()
             ->wherePivot('is_active', true)
             ->first();
-
-        return $device instanceof Device ? $device : null;
     }
 
     public function hasActiveDevice(): bool

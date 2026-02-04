@@ -7,12 +7,6 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Jeffgreco13\FilamentBreezy\Livewire\BrowserSessions;
-use Jeffgreco13\FilamentBreezy\Livewire\PersonalInfo;
-use Jeffgreco13\FilamentBreezy\Livewire\SanctumTokens;
-use Jeffgreco13\FilamentBreezy\Livewire\TwoFactorAuthentication;
-use Jeffgreco13\FilamentBreezy\Livewire\UpdatePassword;
-use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {

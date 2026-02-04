@@ -29,33 +29,33 @@ final class EditUser extends EditRecord
 
     public function getHeaderActions(): array
     {
+        /** @var User $user */
+        $user = $this->record;
+
         return [
             Action::make('block')
                 ->label('Block User')
                 ->color('danger')
                 ->icon('heroicon-o-lock-closed')
                 ->requiresConfirmation()
-                ->visible(fn () => ! $this->record->is_blocked)
-                ->authorize('block', $this->record)
-                ->action(fn () => app(BlockUserAction::class)
-                    ->execute($this->record)),
+                ->visible(fn () => ! $user->is_blocked)
+                ->authorize('block', $user)
+                ->action(fn () => app(BlockUserAction::class)->execute($user)),
 
             Action::make('unblock')
                 ->label('Unblock User')
                 ->color('success')
                 ->icon('heroicon-o-lock-open')
-                ->visible(fn () => $this->record->is_blocked)
-                ->authorize('block', $this->record)
-                ->action(fn () => app(UnblockUserAction::class)
-                    ->execute($this->record)),
+                ->visible(fn () => $user->is_blocked)
+                ->authorize('block', $user)
+                ->action(fn () => app(UnblockUserAction::class)->execute($user)),
 
             Action::make('reset_2fa')
                 ->label('Reset 2FA')
                 ->icon('heroicon-o-key')
                 ->requiresConfirmation()
-                ->authorize('update', $this->record)
-                ->action(fn () => app(ResetUserTwoFactorAction::class)
-                    ->execute($this->record)),
+                ->authorize('update', $user)
+                ->action(fn () => app(ResetUserTwoFactorAction::class)->execute($user)),
         ];
     }
 }

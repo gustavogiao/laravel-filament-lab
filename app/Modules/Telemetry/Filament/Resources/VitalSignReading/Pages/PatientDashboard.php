@@ -89,7 +89,7 @@ final class PatientDashboard extends Page implements HasForms
         ];
     }
 
-    public function getWidgetsColumns(): int|array
+    public function getWidgetsColumns(): array
     {
         return [
             'default' => 1,
