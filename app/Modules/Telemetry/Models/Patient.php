@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Modules\Telemetry\Models;
 
 use App\Models\BaseModel;
+use App\Modules\Telemetry\Policies\PatientPolicy;
 use Database\Factories\PatientFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Device> $devices
  * @property-read Collection<int, VitalSignReading> $vitalSignReadings
  */
+#[UsePolicy(PatientPolicy::class)]
+#[UseFactory(PatientFactory::class)]
 final class Patient extends BaseModel
 {
     protected $table = 'patients';

@@ -6,7 +6,10 @@ namespace App\Modules\Telemetry\Models;
 
 use App\Models\BaseModel;
 use App\Modules\Telemetry\Observers\PatientDeviceAssignmentObserver;
+use App\Modules\Telemetry\Policies\PatientDeviceAssignmentPolicy;
 use Database\Factories\PatientDeviceAssignmentFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
@@ -22,6 +25,8 @@ use Illuminate\Support\Carbon;
  * @property-read Patient $patient
  * @property-read Device $device
  */
+#[UsePolicy(PatientDeviceAssignmentPolicy::class)]
+#[UseFactory(PatientDeviceAssignmentFactory::class)]
 final class PatientDeviceAssignment extends BaseModel
 {
     protected $table = 'patient_device_assignments';

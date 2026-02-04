@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Modules\Telemetry\Models;
 
 use App\Models\BaseModel;
+use App\Modules\Telemetry\Policies\VitalSignReadingPolicy;
 use Database\Factories\VitalSignReadingFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
@@ -24,6 +27,8 @@ use Illuminate\Support\Carbon;
  * @property-read Patient $patient
  * @property-read Device $device
  */
+#[UsePolicy(VitalSignReadingPolicy::class)]
+#[UseFactory(VitalSignReadingFactory::class)]
 final class VitalSignReading extends BaseModel
 {
     protected $table = 'vital_sign_readings';
